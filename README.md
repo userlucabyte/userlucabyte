@@ -65,36 +65,28 @@ def scrape_article(url):
     # We concatenate them into one single text string
     # This raw text will later be cleaned and vectorized
     # for clustering purposes
-    # --------------------------------------------------------
     paragraphs = soup.find_all("p")
     text = " ".join(p.get_text(strip=True) for p in paragraphs)
 
-    # --------------------------------------------------------
     # Return a structured dictionary
     # Each dictionary represents one document in our corpus
     # This format is ideal for later transformation into
     # a dataframe and applying NLP techniques
-    # --------------------------------------------------------
+    
     return {
         "url": url,
         "title": title,
         "date": date,
         "text": text
-    }
-
-
-# ------------------------------------------------------------
+        
 # Initialize an empty list to store all scraped articles
 # This list will represent our raw corpus
-# ------------------------------------------------------------
 articles = []
 
-
-# ------------------------------------------------------------
 # Read the list of URLs from an external file (URLS.txt)
 # Only lines starting with "http" are kept
 # This ensures that only valid article links are processed
-# ------------------------------------------------------------
+
 with open("URLS.txt", "r", encoding="utf-8") as f:
     urls = [line.strip() for line in f if line.strip().startswith("http")]
 
@@ -234,7 +226,7 @@ texts = [a["text"] for a in articles]   # Article contents
 urls = [a["url"] for a in articles]     # Corresponding URLs
 
 
-# 1️⃣ TF-IDF VECTORIZATION
+# 1- TF-IDF VECTORIZATION
 # Text cannot be directly processed by clustering algorithms.
 # TF-IDF converts each document into a numerical vector
 # representing the importance of words in the corpus.
@@ -244,7 +236,7 @@ urls = [a["url"] for a in articles]     # Corresponding URLs
 vectorizer = TfidfVectorizer(max_df=0.8, min_df=2)
 X = vectorizer.fit_transform(texts)
 
-# 2️⃣ K-MEANS CLUSTERING
+# 2️-K-MEANS CLUSTERING
 # K-Means groups documents into k clusters
 # based on similarity in vector space.
 #
@@ -260,7 +252,7 @@ model = KMeans(n_clusters=k, random_state=42)
 clusters = model.fit_predict(X)
 
 
-# 3️⃣ CLUSTER INTERPRETATION
+# 3️-CLUSTER INTERPRETATION
 # Since clustering is unsupervised, clusters do not
 # automatically have names.
 #
