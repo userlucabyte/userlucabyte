@@ -59,7 +59,6 @@ def scrape_article(url):
     time_tag = soup.find("time")
     date = time_tag.get("datetime", "") if time_tag else ""
 
-    # --------------------------------------------------------
     # Extract the article body
     # All paragraph tags <p> are collected
     # We concatenate them into one single text string
@@ -270,7 +269,7 @@ for i in range(k):
     cluster_keywords[i] = [terms[t] for t in top_terms]
 
 
-# 4️⃣ MANUAL CLUSTER LABELING
+# 4️- MANUAL CLUSTER LABELING
 # After examining the dominant keywords,
 # we manually assign semantic names to clusters.
 #
@@ -285,7 +284,7 @@ cluster_names = {
 }
 
 
-# 5️⃣ SAVE RESULTS TO CSV
+# 5️- SAVE RESULTS TO CSV
 # Each article is saved with:
 # - its URL
 # - cluster ID
@@ -300,7 +299,7 @@ with open("clusters.csv", "w", newline="", encoding="utf-8") as f:
         writer.writerow([url, c, cluster_names.get(c, "Inconnu")])
 
 
-# 6️⃣ VERIFICATION AND DISTRIBUTION
+# 6️-VERIFICATION AND DISTRIBUTION
 # Counter shows how many articles are in each cluster.
 # This helps evaluate balance between thematic groups.
 #
@@ -310,12 +309,3 @@ print("Répartition des clusters :", Counter(clusters))
 for i, kw in cluster_keywords.items():
     print(f"Cluster {i} :", ", ".join(kw))
 
-# PROJECT SUMMARY (UNSUPERVISED PIPELINE):
-# 1. Web scraping → build raw dataset
-# 2. Text cleaning → normalize corpus
-# 3. TF-IDF → convert text to vectors
-# 4. K-Means → group similar articles
-# 5. Keyword analysis → interpret clusters
-#
-# The system automatically discovers thematic structures
-# in the newspaper without using predefined labels.
